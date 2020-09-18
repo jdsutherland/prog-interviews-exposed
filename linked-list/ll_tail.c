@@ -5,7 +5,7 @@
 
 typedef struct element {
   struct element *next;
-  void *data;
+  int data;
 } Element;
 
 Element *head, *tail;
@@ -43,12 +43,35 @@ bool delete(Element *ele) {
 }
 
 // Inserts after ele. If ele is NULL, inserts at front.
-bool insertAfter(Element *elem, int data) {
+bool insert_after(Element *ele, int data) {
+  Element *new = malloc(sizeof(*new));
+  if (!new) return false;
+  new->data = data;
+
+  if (!ele) {
+    new->next = head;
+    head = new;
+    if (!tail)
+      tail = new;
+    return true;
+  }
+
+  for (Element *walk = head; walk; walk = walk->next) {
+    if (walk == ele) {
+      new->next = ele->next;
+      ele->next = new;
+      if (ele == tail)
+        tail = new;
+      return true;
+    }
+  }
+
+  free(new);
   return false;
 }
 
 // Inserts new node at end of the list.
-bool push(Element **stack, void *data) {
+bool push(Element **stack, int data) {
   Element *ele = malloc(sizeof(Element));
   if (!ele) return false;
 
@@ -58,7 +81,7 @@ bool push(Element **stack, void *data) {
   return true;
 }
 
-bool pop(Element **stack, void **data) {
+bool pop(Element **stack, int *data) {
   Element *ele;
   if (!(ele = *stack)) return false;
 
@@ -76,9 +99,10 @@ bool delete_stack(Element **stack) {
   return true;
 }
 
-void print_stack(Element **stack) {
-  for (; *stack; stack = &(*stack)->next) {
-    printf("%d\n", (int)(*stack)->data);
+void print_stack(Element *stack) {
+  if (!head) printf("{}\n");
+  for (; stack; stack = stack->next) {
+    printf("%d\n", (int)stack->data);
   }
 }
 
@@ -87,21 +111,39 @@ int main() {
   Element *stack;
   create_stack(&stack);
 
-  push(&stack, (void *)1);
-  assert(stack->data == (void *)1);
-  /* push(&stack, (void *)2); */
-  /* assert(stack->data == (void *)2); */
+  /* push(&stack, 1); */
+  /* assert(stack->data == 1); */
+  /* push(&stack, 2); */
+  /* assert(stack->data == 2); */
   /* push(&stack, (void *)3); */
   /* assert(stack->data == (void *)3); */
 
   head = stack;
   tail = stack;
-  print_stack(&head);
-  delete(head);
+  print_stack(head);
   printf("\n");
-  print_stack(&head);
 
-  assert(!tail);
+  /* delete(head); */
+  /* print_stack(head); */
+  /* printf("\n"); */
+
+  insert_after(tail, 1);
+  insert_after(tail, 2);
+  insert_after(tail, 3);
+  insert_after(tail, 4);
+  print_stack(head);
+  printf("\n");
+
+  /* printf("%d\n", tail->data); */
+  /* printf("\n"); */
+
+  insert_after(head->next->next, 69);
+  insert_after(NULL, 420);
+  /* insert_after(head, 3); */
+  print_stack(head);
+  printf("\n");
+
+  /* assert(tail); */
   /* printf("\n"); */
   /* printf("%d\n", (int)tail->data); */
 
