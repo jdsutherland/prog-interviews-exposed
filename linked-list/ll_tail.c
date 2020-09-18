@@ -22,6 +22,8 @@ bool delete(Element *ele) {
   if (ele == head) {
     head = ele->next;
     free(ele);
+    // special case of deleting list of length 1
+    if (!head) tail = NULL;
     return true;
   }
 
@@ -87,10 +89,10 @@ int main() {
 
   push(&stack, (void *)1);
   assert(stack->data == (void *)1);
-  push(&stack, (void *)2);
-  assert(stack->data == (void *)2);
-  push(&stack, (void *)3);
-  assert(stack->data == (void *)3);
+  /* push(&stack, (void *)2); */
+  /* assert(stack->data == (void *)2); */
+  /* push(&stack, (void *)3); */
+  /* assert(stack->data == (void *)3); */
 
   head = stack;
   tail = stack;
@@ -99,6 +101,7 @@ int main() {
   printf("\n");
   print_stack(&head);
 
+  assert(!tail);
   /* printf("\n"); */
   /* printf("%d\n", (int)tail->data); */
 
