@@ -32,30 +32,23 @@ bool delete (Element *target) {
   return false;
 }
 
-// Inserts after ele. If ele is NULL, inserts at front.
-bool insert_after(Element *ele, int data) {
+// Inserts after target. If target is NULL, inserts at front.
+bool insert_after(Element *target, int data) {
   Element *new = malloc(sizeof(*new));
   if (!new) return false;
   new->data = data;
 
-  if (!ele) {
-    new->next = head;
-    head = new;
-    if (!tail)
-      tail = new;
-    return true;
-  }
-
-  for (Element *walk = head; walk; walk = walk->next) {
-    if (walk == ele) {
-      new->next = ele->next;
-      ele->next = new;
-      if (ele == tail)
+  Element *current = NULL;
+  for (Element **pp_next = &head; 1; pp_next = &(current->next)) {
+    if (current == target) {
+      new->next = *pp_next;
+      *pp_next = new;
+      if (!new->next)
         tail = new;
       return true;
     }
+    if (!(current = *pp_next)) break;
   }
-
   free(new);
   return false;
 }
@@ -124,14 +117,23 @@ int main() {
   print_stack(head);
   printf("\n");
 
+  insert_after(NULL, 0);
+  print_stack(head);
+  printf("\n");
+
+  insert_after(tail, 99);
+  print_stack(head);
+  printf("\n");
   /* printf("%d\n", tail->data); */
   /* printf("\n"); */
 
-  insert_after(head->next->next, 69);
-  insert_after(NULL, 420);
+  /* insert_after(head->next->next, 69); */
+  /* delete(head); */
+  /* delete(head->next); */
+  /* delete(tail); */
   /* insert_after(head, 3); */
-  print_stack(head);
-  printf("\n");
+  /* print_stack(head); */
+  /* printf("\n"); */
 
   /* assert(tail); */
   /* printf("\n"); */
