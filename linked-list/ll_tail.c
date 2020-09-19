@@ -15,29 +15,19 @@ bool create_stack(Element **stack) {
   return true;
 }
 
-// Remove ele from list.
-bool delete(Element *ele) {
-  if (!ele) return false;
-
-  if (ele == head) {
-    head = ele->next;
-    free(ele);
-    // special case of deleting list of length 1
-    if (!head) tail = NULL;
-    return true;
-  }
-
-  for (Element *walk = head; walk; walk = walk->next) {
-    if (walk->next == ele) {
-      if (ele == tail) {
-        walk->next = NULL;
-        tail = walk;
-      } else {
-        walk->next = walk->next->next;
-      }
-      free(ele);
+// Remove target from list.
+bool delete (Element *target) {
+  if (!target) return false;
+  Element *current = NULL;
+  for (Element **pp_next = &head; 1; pp_next = &(current->next)) {
+    if (*pp_next == target) {
+      *pp_next = target->next;
+      if (!target->next)
+        tail = current;
+      free(target);
       return true;
     }
+    if (!(current = *pp_next)) break;
   }
   return false;
 }
