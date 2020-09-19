@@ -89,6 +89,23 @@ void print_stack(Element *stack) {
   }
 }
 
+Element *find_mth_to_last(Element *head, int m) {
+  if (!head) return NULL;
+  Element *current = head;
+  Element *m_behind = head;
+  for (int i = 0; i < m; i++) {
+    if (current->next) {
+      current = current->next;
+    } else
+      return NULL;
+  }
+  while (current->next) {
+    current = current->next;
+    m_behind = m_behind->next;
+  }
+  return m_behind;
+}
+
 int main() {
   /* int *popped = malloc(sizeof(void *)); */
   Element *stack;
@@ -126,6 +143,11 @@ int main() {
   printf("\n");
   /* printf("%d\n", tail->data); */
   /* printf("\n"); */
+
+  Element *mth_to_last = find_mth_to_last(head, 6);
+  printf("\n");
+  if (mth_to_last)
+    printf("%d\n", mth_to_last->data);
 
   /* insert_after(head->next->next, 69); */
   /* delete(head); */
