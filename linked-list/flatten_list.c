@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 typedef struct node {
   struct node *next;
   struct node *prev;
@@ -19,4 +21,21 @@ void flatten_list(Node *head, Node **tail) {
     if (walk->child)
       append(walk->child, tail);
   }
+}
+
+static void prune_children(Node *node) {
+  for (Node *walk = node; walk; walk = walk->next) {
+    if (walk->child) {
+      walk->child->prev->next = NULL;
+      walk->child->prev = NULL;
+      prune_children(walk->child);
+    }
+  }
+}
+
+void unflatten_list(Node *start, Node **tail) {
+  Node *walk = start;
+  prune_children(walk);
+  for (; walk; walk = walk->next);
+  *tail = walk;
 }
