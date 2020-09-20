@@ -106,6 +106,22 @@ Element *find_mth_to_last(Element *head, int m) {
   return m_behind;
 }
 
+#define HEAT_DEATH_OF_UNIVERSE 0
+
+bool is_cyclic(Element *head) {
+  if (!head) return false;
+  Element *slow = head;
+  Element *fast = head->next;
+  while(!HEAT_DEATH_OF_UNIVERSE) {
+    if (!fast || !fast->next)
+      return false;
+    if (fast == slow || fast->next == slow)
+      return true;
+    slow = slow->next;
+    fast = fast->next->next;
+  }
+}
+
 int main() {
   /* int *popped = malloc(sizeof(void *)); */
   Element *stack;
@@ -149,6 +165,8 @@ int main() {
   if (mth_to_last)
     printf("%d\n", mth_to_last->data);
 
+  tail->next = head;
+  printf("%d\n", is_cyclic(head));
   /* insert_after(head->next->next, 69); */
   /* delete(head); */
   /* delete(head->next); */
