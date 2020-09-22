@@ -74,6 +74,18 @@ int *sorted_data(node_t * tree) {
   return sorted;
 }
 
+static void preorder_print(node_t *root) {
+  if (!root) return;
+  node_t *stack[256];
+  stack_push(&stack, root);
+  while(stack_length(stack) > 0) {
+    node_t *walk = stack_pop(&stack);
+    printf("%d\n", walk->data);
+    if (walk->right) stack_push(&stack, walk->right->data);
+    if (walk->left) stack_push(&stack, walk->left->data);
+  }
+}
+
 node_t *search(node_t *root, int data) {
   if (!root) return NULL;
   if (data == root->data) return root;
