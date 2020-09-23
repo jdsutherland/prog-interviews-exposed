@@ -12,6 +12,11 @@ def first_nonrepeated_char(string)
   ''
 end
 
+# idiomatic ruby way - works because hashes maintain order
+def idiomatic_nonrepeated_char(string)
+  string.chars.find { |c| string.count(c) > 1 }
+end
+
 p first_nonrepeated_char('total')
 p first_nonrepeated_char('teeter')
 p first_nonrepeated_char('moom')
