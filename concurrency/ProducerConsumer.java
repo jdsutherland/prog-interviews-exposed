@@ -14,20 +14,28 @@ class IntBuffer {
   private int index;
   private int[] buffer = new int[8];
 
-  public void add(int num) {
-    while (true) {
-      if (index <= buffer.length) {
-        buffer[index++] = num;
-        return;
+  public synchronized void add(int num) {
+    while (index == buffer.length) {
+      try {
+        wait();
+      } catch(InterruptedException e) {
       }
     }
+    buffer[index++] = num;
+    return;
   }
 
-  public int remove() {
+  public synchronized int remove() {
     while (true) {
-      if (index > 0) {
-        return buffer[--index];
+      while (index == 0) {
+        try {
+          wait();
+        } catch(InterruptedException e) {
+        }
       }
+      int result = buffer[--index];
+      notifyAll();
+      return result;
     }
   }
 }
