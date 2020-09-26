@@ -33,7 +33,7 @@ def _print_phone_letter_combinations(digits: list, idx: int, output: list):
 # print_phone_letter_combinations('0000000')
 # print_phone_letter_combinations('1111111')
 # print_phone_letter_combinations('4971927')
-print_phone_letter_combinations('222')
+# print_phone_letter_combinations('222')
 
 # AAA
 # AAB
@@ -62,3 +62,25 @@ print_phone_letter_combinations('222')
 # CCA
 # CCB
 # CCC
+
+def telephone_words_iterative(phone_num: str):
+  digits = [int(n) for n in phone_num]
+  result = [PHONE_KEYS[int(n)][0] for n in phone_num]
+  while(True):
+    print(''.join(result))
+    for i in range(len(phone_num) - 1, -2, -1):
+      if i == -1:
+        return
+      letters = PHONE_KEYS[digits[i]]
+      if result[i] == letters[2]:
+        result[i] = letters[0]
+        # fall-through
+      elif result[i] == letters[0]:
+        result[i] = letters[1]
+        break
+      elif result[i] == letters[1]:
+        result[i] = letters[2]
+        break
+
+
+telephone_words_iterative('222')
