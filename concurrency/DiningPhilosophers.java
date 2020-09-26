@@ -11,7 +11,7 @@ public class DiningPhilosophers {
       forks[i] = new Object();
       int fork1 = i;
       int fork2 = (i + 1) % num;
-      if ( fork2 < fork1 ){
+      if ((i % 2) == 0){
         philosophers[i] = new Philosopher( i, fork2, fork1 );
       } else { philosophers[i] =
         philosophers[i] = new Philosopher( i, fork1, fork2 );
