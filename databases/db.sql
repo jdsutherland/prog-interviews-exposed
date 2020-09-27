@@ -18,3 +18,18 @@ insert into stats (number, totalPoints, year) values
 
 alter table player add primary key (number);
 alter table stats add constraint fk_number foreign key(number) references player(number);
+
+select name, totalPoints, year from player join stats on player.number = stats.number;
+/* select name, totalPoints, year from player join stats using number; */
+select name, totalPoints, year from player left join stats on player.number = stats.number;
+
+select avg(totalPoints) from stats;
+
+/* calc each player's avg total pts per year */
+select
+  name,
+  avg(totalPoints)
+from player
+join stats
+  on player.number = stats.number
+group by name;
