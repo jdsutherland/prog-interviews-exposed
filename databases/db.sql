@@ -15,3 +15,6 @@ insert into stats (number, totalPoints, year) values
   (23, 150, 'Senior'),
   (23, 221, 'Junior'),
   (55, 84, 'Junior');
+
+alter table player add primary key (number);
+alter table stats add constraint fk_number foreign key(number) references player(number);
