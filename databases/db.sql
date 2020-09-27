@@ -33,3 +33,17 @@ from player
 join stats
   on player.number = stats.number
 group by name;
+
+/* pg 214 CompanyName and EmployeesHired tables */
+select companyName from Company join EmployeesHired on Company.id = EmployeesHired.id
+where EmployeesHired.fiscalQuarter = 4 and numHired > 0;
+
+select companyName from Company join EmployeesHired on Company.id = EmployeesHired.id
+where id not in (select id from EmployeesHired where numHired > 0);
+
+/* return the names of all companies and the total number of employees that each company hired during fiscal quarters 1 through 4. */
+select coalesce(sum(numHired) 0)
+from Company left join EmployeesHired
+  on Company.id = EmployeesHired.id
+group by companyName;
+/* end pg 214 CompanyName and EmployeesHired tables */
